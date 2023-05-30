@@ -77,10 +77,10 @@ describe('User instance methods', function () {
   describe('validPassword', function () {
     it('should validate a correct password', function (done) {
       db.user.findOne().then(function (user) {
-        if (user.validPassword('123123123')) {
+        if (user.validPassword('password')) {
           done();
         } else {
-          done(user);
+          done(new Error('Invalid password'));
         }
       }).catch(function (error) {
         done(error);
@@ -92,7 +92,7 @@ describe('User instance methods', function () {
         if (!user.validPassword('nope')) {
           done();
         } else {
-          done(user);
+          done(new Error('Invalid password'));
         }
       }).catch(function (error) {
         done(error);
@@ -106,7 +106,7 @@ describe('User instance methods', function () {
         if (user.toJSON().password === undefined) {
           done();
         } else {
-          done(user);
+          done(new Error('Password field is present'));
         }
       }).catch(function (error) {
         done(error);
@@ -114,3 +114,4 @@ describe('User instance methods', function () {
     });
   });
 });
+
