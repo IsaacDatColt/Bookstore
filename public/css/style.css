@@ -19,11 +19,79 @@ h1 {
     background: linear-gradient(to right, rgba(106, 17, 203, 1), rgba(37, 117, 252, 1))
 }
 
-body {
+/* body {
     margin-top: 20px;
     color: #1a202c;
     text-align: left;
     background-color: #e2e8f0;
+} */
+body {
+    background-color: #362B45;
+    color: #FFFFFF;
+}
+
+.jumbotron {
+    background-color: #523C57;
+    color: #FFFFFF;
+}
+
+.section-heading {
+    color: #FFFFFF;
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.home-about {
+    text-align: center;
+}
+
+.search-container {
+    margin-top: 50px;
+    text-align: center;
+}
+
+.search-container input[type="text"] {
+    width: 300px;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+}
+
+.search-container button {
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+    background-color: #8C6B8F;
+    color: #FFFFFF;
+}
+
+.features-container {
+    margin-top: 50px;
+}
+
+.feature-card {
+    background-color: #523C57;
+    color: #FFFFFF;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.feature-card h3 {
+    font-size: 24px;
+    margin-bottom: 15px;
+}
+
+.feature-card p {
+    margin-bottom: 0;
+}
+
+.footer {
+    background-color: #523C57;
+    color: #FFFFFF;
+    padding: 20px;
+    text-align: center;
 }
 
 .main-body {

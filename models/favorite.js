@@ -15,8 +15,7 @@ module.exports = (sequelize, DataTypes) => {
 
     favorite.init(
         {
-            // Define attributes here that correspond to the columns in the "favorites" table
-            // For example:
+
             id: {
                 allowNull: false,
                 autoIncrement: true,

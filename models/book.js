@@ -8,10 +8,8 @@ module.exports = (sequelize, DataTypes) => {
             book.belongsTo(models.user, { foreignKey: 'userId' });
 
             // Book has many favorites
-            book.hasMany(models.favorite, { foreignKey: 'bookId' }); // Update 'Favorite' to match the model name
+            book.hasMany(models.favorite, { foreignKey: 'bookId' });
         }
-
-
     }
 
     book.init({
@@ -35,6 +33,14 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: false,
             unique: true
+        },
+        imageLinks: {
+            type: DataTypes.JSON,
+            allowNull: true
+        },
+        pageCount: {
+            type: DataTypes.INTEGER,
+            allowNull: true
         }
     }, {
         sequelize,

@@ -6,6 +6,7 @@ const session = require('express-session');
 const flash = require('connect-flash');
 const passport = require('./config/ppConfig');
 const isLoggedIn = require('./middleware/isLoggedIn');
+const axios = require('axios');
 
 
 // enviornment variables
@@ -42,6 +43,9 @@ app.use((req, res, next) => {
 app.get('/', (req, res) => {
   res.render('index');
 });
+
+
+
 
 app.use('/auth', require('./controllers/auth'));
 
