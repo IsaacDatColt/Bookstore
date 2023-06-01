@@ -8,10 +8,8 @@ const passport = require('./config/ppConfig');
 const isLoggedIn = require('./middleware/isLoggedIn');
 const axios = require('axios');
 
-
-// enviornment variables
+// Environment variables
 SECRET_SESSION = process.env.SECRET_SESSION;
-// console.log('>>>>>', SECRET_SESSION);
 
 app.set('view engine', 'ejs');
 
@@ -20,36 +18,75 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static(__dirname + '/public'));
 app.use(layouts);
 
-app.use(flash());            // flash middleware
-
+app.use(flash());
 app.use(session({
-  secret: SECRET_SESSION,    // What we actually will be giving the user on our site as a session cookie
-  resave: false,             // Save the session even if it's modified, make this false
-  saveUninitialized: true    // If we have a new session, we save it, therefore making that true
+  secret: SECRET_SESSION,
+  resave: false,
+  saveUninitialized: true
 }));
 
-// add passport
 app.use(passport.initialize());
 app.use(passport.session());
 
 app.use((req, res, next) => {
-  console.log(res.locals);
   res.locals.alerts = req.flash();
   res.locals.currentUser = req.user;
   next();
 });
 
-
 app.get('/', (req, res) => {
   res.render('index');
 });
 
+app.get('/explore', isLoggedIn, (req, res) => {
+  res.render('explore', { books: [], search: '' });
+});
 
+
+app.get('/explore/:genre/:title', function (req, res) {
+  axios.get(`https://www.googleapis.com/books/v1/volumes?q=genre:${encodeURIComponent(req.params.genre)}&q=intitle:${encodeURIComponent(req.params.title)}&maxResults=1`)
+    .then(function (response) {
+      if (response.data.items && response.data.items.length > 0) {
+        const book = response.data.items[0].volumeInfo;
+        res.render('single-book', { book });
+      } else {
+        console.log('Book not found.');
+        res.json({ message: 'Book not found.' });
+      }
+    })
+    .catch(function (error) {
+      console.log('Error fetching data:', error);
+      res.json({ message: 'Data not found. Please try again later.' });
+    });
+});
+
+// POST route for book search
+app.post('/explore', isLoggedIn, (req, res) => {
+  const { genre, title } = req.body;
+  const query = `genre:${genre} intitle:${title}`;
+
+  console.log('Search Query:', query);
+
+  axios.get(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&maxResults=10`)
+    .then(function (response) {
+      if (response.data.items && response.data.items.length > 0) {
+        const books = response.data.items.map(item => item.volumeInfo);
+        console.log('Search Results:', books);
+        res.render('explore', { books, search: query });
+      } else {
+        console.log('No books found.');
+        res.render('explore', { books: [], search: query });
+      }
+    })
+    .catch(function (error) {
+      console.log('Error fetching data:', error);
+      res.render('explore', { books: [], search: query });
+    });
+});
 
 
 app.use('/auth', require('./controllers/auth'));
 
-// Add this below /auth controllers
 app.get('/profile', isLoggedIn, (req, res) => {
   const { id, name, email } = req.user.get();
   res.render('profile', { id, name, email });
