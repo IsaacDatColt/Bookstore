@@ -25,6 +25,11 @@ body {
     color: #FFFFFF;
 }
 
+.search-body {
+    background-color: #502c6e;
+    color: #cad6e2;
+}
+
 .jumbotron {
     background-color: #523C57;
     color: #FFFFFF;

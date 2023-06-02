@@ -7,6 +7,8 @@ const flash = require('connect-flash');
 const passport = require('./config/ppConfig');
 const isLoggedIn = require('./middleware/isLoggedIn');
 const axios = require('axios');
+const { user, book, favorite } = require('./models');
+
 
 // Environment variables
 SECRET_SESSION = process.env.SECRET_SESSION;
@@ -34,16 +36,18 @@ app.use((req, res, next) => {
   next();
 });
 
+//Home route
 app.get('/', (req, res) => {
   res.render('index');
 });
 
+// Route for explore page
 app.get('/explore', isLoggedIn, (req, res) => {
   res.render('explore', { books: [], search: '' });
 });
 
-
-app.get('/explore/:genre/:title', function (req, res) {
+//bookSearch
+app.get('/bookSearch/:genre/:title', function (req, res) {
   axios.get(`https://www.googleapis.com/books/v1/volumes?q=genre:${encodeURIComponent(req.params.genre)}&q=intitle:${encodeURIComponent(req.params.title)}&maxResults=1`)
     .then(function (response) {
       if (response.data.items && response.data.items.length > 0) {
@@ -61,28 +65,75 @@ app.get('/explore/:genre/:title', function (req, res) {
 });
 
 // POST route for book search
-app.post('/explore', isLoggedIn, (req, res) => {
-  const { genre, title } = req.body;
-  const query = `genre:${genre} intitle:${title}`;
+app.post('/bookSearch', isLoggedIn, (req, res) => {
+  const { genre, author, title, category, isbn } = req.body;
 
-  console.log('Search Query:', query);
+  let query = '';
 
-  axios.get(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&maxResults=10`)
+  if (genre) {
+    query += `genre:${genre} `;
+  }
+
+  if (author) {
+    query += `inauthor:${author} `;
+  }
+
+  if (title) {
+    query += `intitle:${title} `;
+  }
+
+  if (category) {
+    query += `category:${category} `;
+  }
+
+  if (isbn) {
+    query += `isbn:${isbn} `;
+  }
+
+  const maxResults = 40; // number of books to fetch
+
+  axios.get(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&maxResults=${maxResults}`)
     .then(function (response) {
       if (response.data.items && response.data.items.length > 0) {
         const books = response.data.items.map(item => item.volumeInfo);
         console.log('Search Results:', books);
-        res.render('explore', { books, search: query });
+
+        let filteredBooks;
+
+        if (req.body.searchType === 'author') {
+          filteredBooks = books.filter(book => book.authors && book.authors.join(', ').toLowerCase().includes(req.body.search.toLowerCase()));
+        } else if (req.body.searchType === 'title') {
+          filteredBooks = books.filter(book => book.title && book.title.toLowerCase().includes(req.body.search.toLowerCase()));
+        } else if (req.body.searchType === 'category') {
+          filteredBooks = books.filter(book => book.categories && book.categories.join(', ').toLowerCase().includes(req.body.search.toLowerCase()));
+        } else if (req.body.searchType === 'isbn') {
+          filteredBooks = books.filter(book => book.industryIdentifiers && book.industryIdentifiers.some(identifier => identifier.identifier.toLowerCase().includes(req.body.search.toLowerCase())));
+        } else {
+          filteredBooks = books;
+        }
+
+        res.render('search', { books: filteredBooks, search: query });
       } else {
         console.log('No books found.');
-        res.render('explore', { books: [], search: query });
+        res.render('search', { books: [], search: query });
       }
     })
     .catch(function (error) {
       console.log('Error fetching data:', error);
-      res.render('explore', { books: [], search: query });
+      res.render('search', { books: [], search: query });
     });
 });
+
+
+
+
+
+
+// Search page route
+app.get('/search', isLoggedIn, (req, res) => {
+  res.render('search', { books: [] });
+});
+
 
 
 app.use('/auth', require('./controllers/auth'));
