@@ -12,10 +12,10 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // User has many books
-      this.hasMany(models.book, {
-        foreignKey: 'userId',
-        as: 'books',
-      });
+      // this.hasMany(models.book, {
+      //   foreignKey: 'userId',
+      //   as: 'books',
+      // });
 
       // User has many favorites
       this.hasMany(models.favorite, {

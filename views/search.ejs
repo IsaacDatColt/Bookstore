@@ -63,13 +63,20 @@
                     <h2>Search Results:</h2>
                     <% books.forEach(function(book) { %>
                     <div class="search-result">
-                        <img src="<%= book.imageLinks ? book.imageLinks.thumbnail : '/placeholder.png' %>"
+                        <div class="title-section">
+                            <h3><%= book.volumeInfo.title %></h3>
+                        </div>
+                        <img src="<%= book.volumeInfo.imageLinks ? book.volumeInfo.imageLinks.thumbnail : '/placeholder.png' %>"
                             alt="Book Cover">
-                        <h3><%= book.title %></h3>
-                        <p>Author: <%= book.authors ? book.authors.join(', ') : 'N/A' %></p>
-                        <p>Description: <%= book.description ? book.description : 'N/A' %></p>
-                        <p>Category: <%= book.categories ? book.categories.join(', ') : 'N/A' %></p>
+                        <p>Author: <%= book.volumeInfo.authors ? book.volumeInfo.authors.join(', ') : 'N/A' %></p>
+                        <p>Description: <%= book.volumeInfo.description ? book.volumeInfo.description : 'N/A' %></p>
+                        <p>Category: <%= book.volumeInfo.categories ? book.volumeInfo.categories.join(', ') : 'N/A' %>
+                        </p>
                         <hr>
+                        <form action="/favorites/add" method="POST">
+                            <input type="hidden" name="bookId" value="<%= book.id %>">
+                            <button type="submit" class="favorite-button">Add to Favorites</button>
+                        </form>
                     </div>
                     <% }); %>
                     <% } else { %>
@@ -78,12 +85,8 @@
                 </div>
             </div>
         </section>
+
     </main>
-
-    <footer class="footer text-center">
-        <p>&copy; 2023 BookVibes. All rights reserved.</p>
-    </footer>
-
 </body>
 
 </html>
