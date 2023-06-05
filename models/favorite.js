@@ -15,7 +15,6 @@ module.exports = (sequelize, DataTypes) => {
 
     favorite.init(
         {
-
             id: {
                 allowNull: false,
                 autoIncrement: true,
@@ -28,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
             },
             bookId: {
                 allowNull: false,
-                type: DataTypes.INTEGER
+                type: DataTypes.STRING
             },
             createdAt: {
                 allowNull: false,

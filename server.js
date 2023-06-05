@@ -9,9 +9,9 @@ const isLoggedIn = require('./middleware/isLoggedIn');
 const axios = require('axios');
 const { user, book, favorite } = require('./models');
 
-
 // Environment variables
-SECRET_SESSION = process.env.SECRET_SESSION;
+const SECRET_SESSION = process.env.SECRET_SESSION;
+const API_KEY = process.env.API_KEY;
 
 app.set('view engine', 'ejs');
 
@@ -36,7 +36,7 @@ app.use((req, res, next) => {
   next();
 });
 
-//Home route
+// Home route
 app.get('/', (req, res) => {
   res.render('index');
 });
@@ -46,9 +46,9 @@ app.get('/explore', isLoggedIn, (req, res) => {
   res.render('explore', { books: [], search: '' });
 });
 
-//bookSearch
+// bookSearch
 app.get('/bookSearch/:genre/:title', function (req, res) {
-  axios.get(`https://www.googleapis.com/books/v1/volumes?q=genre:${encodeURIComponent(req.params.genre)}&q=intitle:${encodeURIComponent(req.params.title)}&maxResults=1`)
+  axios.get(`https://www.googleapis.com/books/v1/volumes?q=genre:${encodeURIComponent(req.params.genre)}+intitle:${encodeURIComponent(req.params.title)}&maxResults=1&key=${API_KEY}`)
     .then(function (response) {
       if (response.data.items && response.data.items.length > 0) {
         const book = response.data.items[0].volumeInfo;
@@ -92,7 +92,7 @@ app.post('/bookSearch', isLoggedIn, (req, res) => {
 
   const maxResults = 40; // number of books to fetch
 
-  axios.get(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&maxResults=${maxResults}`)
+  axios.get(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&maxResults=${maxResults}&key=${API_KEY}`)
     .then(function (response) {
       if (response.data.items && response.data.items.length > 0) {
         const books = response.data.items.map(item => item);
@@ -111,7 +111,7 @@ app.post('/bookSearch', isLoggedIn, (req, res) => {
         } else {
           filteredBooks = books;
         }
-        console.log('DJLSKDHOFINSDF', filteredBooks);
+        console.log('FILTERED BOOKS', filteredBooks);
         res.render('search', { books: filteredBooks, search: query });
       } else {
         console.log('No books found.');
@@ -124,23 +124,21 @@ app.post('/bookSearch', isLoggedIn, (req, res) => {
     });
 });
 
-
-
 // Add book to favorites
 app.post('/favorites/add', async (req, res) => {
   const { bookId } = req.body;
   const userId = req.user.id;
-  console.log('------------------????', bookId);
+  console.log('BOOK ID', bookId);
   try {
     const fav = await favorite.findOne({
       where: {
         userId: userId,
-        bookId: bookId // Parse bookId as integer
+        bookId: bookId
       }
     });
 
     if (fav) {
-
+      // Book already in favorites, handle accordingly
     } else {
       // Add book to favorites
       await favorite.create({
@@ -152,41 +150,55 @@ app.post('/favorites/add', async (req, res) => {
     console.error('Error adding book to favorites:', error);
   }
 
-
-  // res.redirect('/search');
-  res.redirect('/favorites');
+  res.redirect('/explore');
 });
 
-app.get('/favorites', isLoggedIn, (req, res) => {
-  // step 1 get all the books from the API
-  // step 2: get all the users favorites
-  // step 3: loop over the users favorites and books. Store books from API that the bookID matches the user favorites id
-  res.render('/favorites', { favorites: filteredBooks });
-});
+// Favorites page route
+app.get('/favorites', isLoggedIn, async (req, res) => {
+  try {
+    const userId = req.user.id;
 
+    // Step 1: Get all the user's favorite book IDs
+    const userFavorites = await favorite.findAll({
+      where: {
+        userId: userId
+      }
+    });
+
+    console.log('User Favorites:', userFavorites);
+
+    // Step 2: Fetch the book details for the favorite books from the API
+    const favoriteBooks = [];
+
+    for (const userFavorite of userFavorites) {
+      try {
+        const bookId = userFavorite.bookId;
+        const response = await axios.get(`https://www.googleapis.com/books/v1/volumes/${bookId}?key=${API_KEY}`);
+        favoriteBooks.push(response.data);
+      } catch (error) {
+        console.error('Error fetching book details:', error);
+      }
+    }
+
+    res.render('favorites', { books: favoriteBooks });
+
+  } catch (error) {
+    console.error('Error retrieving user favorites:', error);
+    res.render('favorites', { books: [] });
+  }
+});
 
 // Search page route
 app.get('/search', isLoggedIn, (req, res) => {
   res.render('search', { books: [] });
 });
 
-
-
 app.use('/auth', require('./controllers/auth'));
 
 app.get('/profile', isLoggedIn, async (req, res) => {
   const { id, name, email } = req.user;
-
-  // Get the user's favorite books from the database
-  const favorites = await favorite.findAll({
-    where: { userId: id },
-    include: [{ model: book }]
-  });
-
-  res.render('profile', { id, name, email, favorites });
+  res.render('profile', { id, name, email });
 });
-
-
 
 const PORT = process.env.PORT || 3000;
 const server = app.listen(PORT, () => {

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Favorites</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* Add your custom CSS styles here */
+        /* Feel free to modify the styles as per your preference */
+        body {
+            background-color: #1A1A1A;
+            color: #FFFFFF;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .favorite-book {
+            background-color: #303030;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .favorite-book img {
+            width: 150px;
+            height: auto;
+            margin-bottom: 10px;
+        }
+
+        .favorite-book h3 {
+            margin: 0;
+            font-size: 24px;
+            color: #FFC107;
+        }
+
+        .favorite-book p {
+            margin: 0;
+            color: #CCCCCC;
+        }
+
+        .favorite-book hr {
+            border: none;
+            border-top: 1px solid #CCCCCC;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>User Favorites</h1>
+        <% if (books.length > 0) { %>
+        <% books.forEach(function(book) { %>
+        <div class="favorite-book">
+            <h3><%= book.volumeInfo.title %></h3>
+            <img src="<%= book.volumeInfo.imageLinks ? book.volumeInfo.imageLinks.thumbnail : '/placeholder.png' %>"
+                alt="Book Cover">
+            <p>Author: <%= book.volumeInfo.authors ? book.volumeInfo.authors.join(', ') : 'N/A' %></p>
+            <p>Description: <%= book.volumeInfo.description ? book.volumeInfo.description : 'N/A' %></p>
+            <p>Category: <%= book.volumeInfo.categories ? book.volumeInfo.categories.join(', ') : 'N/A' %></p>
+            <hr>
+        </div>
+        <% }); %>
+        <% } else { %>
+        <p>No favorite books found.</p>
+        <% } %>
+    </div>
+</body>
+
+</html>
