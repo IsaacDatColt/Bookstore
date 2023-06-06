@@ -128,7 +128,7 @@ app.post('/bookSearch', isLoggedIn, (req, res) => {
 app.post('/favorites/add', async (req, res) => {
   const { bookId } = req.body;
   const userId = req.user.id;
-  console.log('BOOK ID', bookId);
+  console.log('BOOK ID!!!!!!', bookId);
   try {
     const fav = await favorite.findOne({
       where: {
@@ -138,7 +138,7 @@ app.post('/favorites/add', async (req, res) => {
     });
 
     if (fav) {
-      // Book already in favorites, handle accordingly
+
     } else {
       // Add book to favorites
       await favorite.create({
@@ -150,24 +150,41 @@ app.post('/favorites/add', async (req, res) => {
     console.error('Error adding book to favorites:', error);
   }
 
-  res.redirect('/explore');
+  res.redirect('/favorites');
 });
+
+
+// Remove book from favorites
+app.post('/favorites/remove', async (req, res) => {
+  const { bookId } = req.body;
+  const userId = req.user.id;
+
+  try {
+    await favorite.destroy({
+      where: {
+        userId: userId,
+        bookId: bookId
+      }
+    });
+  } catch (error) {
+    console.error('Error removing book from favorites:', error);
+  }
+
+  res.redirect('/favorites');
+});
+
 
 // Favorites page route
 app.get('/favorites', isLoggedIn, async (req, res) => {
   try {
     const userId = req.user.id;
-
-    // Step 1: Get all the user's favorite book IDs
     const userFavorites = await favorite.findAll({
       where: {
         userId: userId
       }
     });
 
-    console.log('User Favorites:', userFavorites);
-
-    // Step 2: Fetch the book details for the favorite books from the API
+    console.log('USER FAVORITES:', userFavorites);
     const favoriteBooks = [];
 
     for (const userFavorite of userFavorites) {

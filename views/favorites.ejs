@@ -8,8 +8,6 @@
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
-        /* Add your custom CSS styles here */
-        /* Feel free to modify the styles as per your preference */
         body {
             background-color: #1A1A1A;
             color: #FFFFFF;
@@ -55,6 +53,14 @@
             border-top: 1px solid #CCCCCC;
             margin: 20px 0;
         }
+
+        .unfavorite-button {
+            background-color: #dc3545;
+            color: #ffffff;
+            border: none;
+            padding: 8px 12px;
+            cursor: pointer;
+        }
     </style>
 </head>
 
@@ -71,6 +77,10 @@
             <p>Description: <%= book.volumeInfo.description ? book.volumeInfo.description : 'N/A' %></p>
             <p>Category: <%= book.volumeInfo.categories ? book.volumeInfo.categories.join(', ') : 'N/A' %></p>
             <hr>
+            <form action="/favorites/remove" method="POST">
+                <input type="hidden" name="bookId" value="<%= book.id %>">
+                <button type="submit" class="unfavorite-button">Unfavorite</button>
+            </form>
         </div>
         <% }); %>
         <% } else { %>
