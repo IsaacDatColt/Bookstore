@@ -330,6 +330,26 @@ app.get('/profile', isLoggedIn, async (req, res) => {
   res.render('profile', { id, name, email });
 });
 
+// PUT route for updating name
+app.put('/profile/name', isLoggedIn, async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { name } = req.body;
+
+    const updatedUser = await user.update(
+      { name },
+      { where: { id: userId } }
+    );
+
+    req.flash('success', 'Name updated successfully');
+    res.redirect('/profile');
+  } catch (error) {
+    console.error('Error updating name:', error);
+    req.flash('error', 'Failed to update name');
+    res.redirect('/profile');
+  }
+});
+
 const PORT = process.env.PORT || 3000;
 const server = app.listen(PORT, () => {
   console.log(`🎧 You're listening to the smooth sounds of port ${PORT} 🎧`);

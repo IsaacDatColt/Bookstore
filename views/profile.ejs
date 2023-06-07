@@ -22,6 +22,7 @@
       </nav>
       <!-- /Breadcrumb -->
 
+
       <div class="row gutters-sm">
         <div class="col-md-4 mb-3">
           <div class="card">
@@ -97,12 +98,20 @@
         <div class="col-md-8">
           <div class="card mb-3">
             <div class="card-body">
+              <div class="row justify-content-center">
+                <div class="col-12 text-center">
+                  <h2>Edit Profile</h2>
+                </div>
+              </div>
               <div class="row">
                 <div class="col-sm-3">
                   <h6 class="mb-0">Full Name</h6>
                 </div>
                 <div class="col-sm-9 text-secondary">
-                  <%= name %>
+                  <form method="POST" action="/profile/name?_method=PUT">
+                    <input type="text" class="form-control" id="name" name="name" value="<%= name %>" required>
+                    <button type="submit">Save</button>
+                  </form>
                 </div>
               </div>
               <hr>
@@ -111,36 +120,33 @@
                   <h6 class="mb-0">Email</h6>
                 </div>
                 <div class="col-sm-9 text-secondary">
-                  <%= email %>
+                  <form method="POST" action="/profile/email?_method=PUT">
+                    <input type="email" class="form-control" name="email" value="<%= email %>" required>
+                    <button type="submit">Save</button>
+                  </form>
                 </div>
               </div>
               <hr>
               <div class="row">
                 <div class="col-sm-3">
-                  <h6 class="mb-0">Phone</h6>
+                  <h6 class="mb-0">Password</h6>
                 </div>
-
+                <div class="col-sm-9 text-secondary">
+                  <form method="POST" action="/profile/password?_method=PUT">
+                    <input type="password" class="form-control" name="password" required>
+                    <button type="submit">Save</button>
+                  </form>
+                </div>
               </div>
               <hr>
-              <div class="row">
-                <div class="col-sm-3">
-                  <h6 class="mb-0">Address</h6>
-                </div>
-
-              </div>
-              <hr>
-              <div class="row">
-                <div class="col-sm-12">
-                  <a class="btn btn-info " target="__blank"
-                    href="https://www.bootdey.com/snippets/view/bs4-beta-user-profile">Edit</a>
-                </div>
-              </div>
             </div>
+            <hr>
           </div>
         </div>
       </div>
-
     </div>
+
+  </div>
   </div>
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@1.16.1/dist/umd/popper.min.js"></script>
