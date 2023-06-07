@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Genre - Fantasy</title>
+</head>
+
+<body>
+    <h1>Genre - Fantasy</h1>
+
+    <% if (books && books.length > 0) { %>
+    <ul>
+        <% books.forEach(function(book) { %>
+        <li>
+            <h3><%= book.volumeInfo.title %></h3>
+            <form action="/favorites/add" method="POST">
+                <input type="hidden" name="bookId" value="<%= book.id %>">
+                <button type="submit" class="favorite-button">Add to Favorites</button>
+            </form>
+            <br>
+            <% if (book.volumeInfo.imageLinks && book.volumeInfo.imageLinks.thumbnail) { %>
+            <img src="<%= book.volumeInfo.imageLinks.thumbnail %>" alt="Book Cover">
+            <% } %>
+            <p>Author: <%= book.volumeInfo.authors ? book.volumeInfo.authors.join(', ') : 'Unknown' %></p>
+            <p>Published Date: <%= book.volumeInfo.publishedDate ? book.volumeInfo.publishedDate : 'Unknown' %></p>
+            <p>Description:
+                <%= book.volumeInfo.description ? book.volumeInfo.description : 'No description available.' %></p>
+        </li>
+        <% }) %>
+    </ul>
+    <% } else { %>
+    <p>No books found in the Adventure genre.</p>
+    <% } %>
+</body>
+
+</html>

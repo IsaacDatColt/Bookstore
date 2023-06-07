@@ -224,7 +224,21 @@ app.get('/adventure', isLoggedIn, (req, res) => {
 
 // Route for fantasy genre
 app.get('/fantasy', isLoggedIn, (req, res) => {
-  res.render('fantasy');
+  const genre = 'fantasy';
+  const maxResults = 40; // number of books to fetch
+
+  axios
+    .get(
+      `https://www.googleapis.com/books/v1/volumes?q=subject:${encodeURIComponent(genre)}&maxResults=${maxResults}&key=${API_KEY}`
+    )
+    .then(function (response) {
+      const books = response.data.items;
+      res.render('fantasy', { genre, books });
+    })
+    .catch(function (error) {
+      console.log('Error fetching data:', error);
+      res.render('no-results');
+    });
 });
 
 // Route for mystery genre
