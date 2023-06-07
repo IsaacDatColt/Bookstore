@@ -140,7 +140,6 @@ app.post('/favorites/add', async (req, res) => {
     if (fav) {
 
     } else {
-      // Add book to favorites
       await favorite.create({
         userId: userId,
         bookId: bookId
@@ -153,25 +152,6 @@ app.post('/favorites/add', async (req, res) => {
   res.redirect('/favorites');
 });
 
-
-// Remove book from favorites
-app.post('/favorites/remove', async (req, res) => {
-  const { bookId } = req.body;
-  const userId = req.user.id;
-
-  try {
-    await favorite.destroy({
-      where: {
-        userId: userId,
-        bookId: bookId
-      }
-    });
-  } catch (error) {
-    console.error('Error removing book from favorites:', error);
-  }
-
-  res.redirect('/favorites');
-});
 
 
 // Favorites page route

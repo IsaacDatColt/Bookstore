@@ -77,16 +77,12 @@
             <p>Description: <%= book.volumeInfo.description ? book.volumeInfo.description : 'N/A' %></p>
             <p>Category: <%= book.volumeInfo.categories ? book.volumeInfo.categories.join(', ') : 'N/A' %></p>
             <hr>
-            <form action="/favorites/remove" method="POST">
-                <input type="hidden" name="bookId" value="<%= book.id %>">
-                <button type="submit" class="unfavorite-button">Unfavorite</button>
-            </form>
+
+            <% }); %>
+            <% } else { %>
+            <p>No favorite books found.</p>
+            <% } %>
         </div>
-        <% }); %>
-        <% } else { %>
-        <p>No favorite books found.</p>
-        <% } %>
-    </div>
 </body>
 
 </html>
