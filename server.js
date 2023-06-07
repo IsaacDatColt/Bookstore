@@ -301,7 +301,21 @@ app.get('/science-fiction', isLoggedIn, (req, res) => {
 
 // Route for Thriller genre
 app.get('/thriller', isLoggedIn, (req, res) => {
-  res.render('thriller');
+  const genre = 'thriller';
+  const maxResults = 40; // number of books to fetch
+
+  axios
+    .get(
+      `https://www.googleapis.com/books/v1/volumes?q=subject:${encodeURIComponent(genre)}&maxResults=${maxResults}&key=${API_KEY}`
+    )
+    .then(function (response) {
+      const books = response.data.items;
+      res.render('thriller', { genre, books });
+    })
+    .catch(function (error) {
+      console.log('Error fetching data:', error);
+      res.render('no-results');
+    });
 });
 
 // Search page route
