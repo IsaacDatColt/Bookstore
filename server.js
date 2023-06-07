@@ -350,6 +350,26 @@ app.put('/profile/name', isLoggedIn, async (req, res) => {
   }
 });
 
+// PUT route for updating email
+app.put('/profile/email', isLoggedIn, async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { email } = req.body;
+
+    const updatedUser = await user.update(
+      { email },
+      { where: { id: userId } }
+    );
+
+    req.flash('success', 'Email updated successfully');
+    res.redirect('/profile');
+  } catch (error) {
+    console.error('Error updating email:', error);
+    req.flash('error', 'Failed to update email');
+    res.redirect('/profile');
+  }
+});
+
 const PORT = process.env.PORT || 3000;
 const server = app.listen(PORT, () => {
   console.log(`🎧 You're listening to the smooth sounds of port ${PORT} 🎧`);
