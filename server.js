@@ -9,6 +9,7 @@ const isLoggedIn = require('./middleware/isLoggedIn');
 const axios = require('axios');
 const { user, book, favorite } = require('./models');
 
+
 // Environment variables
 const SECRET_SESSION = process.env.SECRET_SESSION;
 const API_KEY = process.env.API_KEY;
@@ -19,6 +20,9 @@ app.use(require('morgan')('dev'));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(__dirname + '/public'));
 app.use(layouts);
+const methodOverride = require('method-override');
+app.use(methodOverride('_method'));
+
 
 app.use(flash());
 app.use(session({
@@ -153,6 +157,19 @@ app.post('/favorites/add', async (req, res) => {
 });
 
 
+// DELETE route for favorites
+app.delete('/favorites/:id', async (req, res) => {
+  const favoriteId = req.params.id;
+
+  try {
+    await favorite.destroy({ where: { bookId: favoriteId } });
+    res.redirect('/favorites');
+  } catch (error) {
+    console.error('Error deleting favorite:', error);
+    res.redirect('/favorites');
+  }
+});
+
 
 // Favorites page route
 app.get('/favorites', isLoggedIn, async (req, res) => {
@@ -181,7 +198,7 @@ app.get('/favorites', isLoggedIn, async (req, res) => {
 
   } catch (error) {
     console.error('Error retrieving user favorites:', error);
-    res.render('favorites', { books: [] });
+    res.render('no-results', { books: [] });
   }
 });
 
