@@ -202,6 +202,52 @@ app.get('/favorites', isLoggedIn, async (req, res) => {
   }
 });
 
+// Route for adventure page
+app.get('/adventure', isLoggedIn, (req, res) => {
+  const genre = 'adventure';
+  const maxResults = 40; // number of books to fetch
+
+  axios
+    .get(
+      `https://www.googleapis.com/books/v1/volumes?q=subject:${encodeURIComponent(genre)}&maxResults=${maxResults}&key=${API_KEY}`
+    )
+    .then(function (response) {
+      const books = response.data.items;
+      res.render('adventure', { genre, books });
+    })
+    .catch(function (error) {
+      console.log('Error fetching data:', error);
+      res.render('no-results');
+    });
+});
+
+
+// Route for fantasy genre
+app.get('/fantasy', isLoggedIn, (req, res) => {
+  res.render('fantasy');
+});
+
+// Route for mystery genre
+app.get('/mystery', isLoggedIn, (req, res) => {
+  res.render('mystery');
+});
+
+// Route for romance genre
+app.get('/romance', isLoggedIn, (req, res) => {
+  res.render('romance');
+});
+
+// Route for sciencefiction genre
+app.get('/science-fiction', isLoggedIn, (req, res) => {
+  res.render('science-fiction');
+});
+
+
+// Route for Thriller genre
+app.get('/thriller', isLoggedIn, (req, res) => {
+  res.render('thriller');
+});
+
 // Search page route
 app.get('/search', isLoggedIn, (req, res) => {
   res.render('search', { books: [] });
