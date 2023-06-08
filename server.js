@@ -164,7 +164,7 @@ app.get('/favorites', isLoggedIn, async (req, res) => {
 app.post('/favorites/add', async (req, res) => {
   const { bookId } = req.body;
   const userId = req.user.id;
-  console.log('BOOK ID!!!!!!', bookId);
+  // console.log('BOOK ID!!!!!!', bookId);
   try {
     const fav = await favorite.findOne({
       where: {
@@ -371,6 +371,7 @@ app.put('/profile/email', isLoggedIn, async (req, res) => {
   }
 });
 
+//404
 app.use((req, res) => {
   res.status(404).render('404');
 });

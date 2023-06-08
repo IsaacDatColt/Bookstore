@@ -26,6 +26,8 @@ Explore Page:
 
 ![Explore](https://i.imgur.com/1ydGbXa.png)
 
+Search Page: Here you will search for books. Just input information in any search bar.
+![Search](https://i.imgur.com/Y1ms0GA.png)
 
 
 ## How to Install
@@ -45,6 +47,9 @@ Explore Page:
 - Node.js
 - PSQL
 
+#### CSS library
+- Bootstrap
+
 #### Node dependencies featured 
 
 - axios
@@ -60,6 +65,25 @@ Explore Page:
 - sequelize 
 - supertest
 
+
+```
+
+```
+
+
+#### Blockers
+- One of my main blockers was finding out that google books api had the book Id as a string and I had my model as an integer.
+- Another blocker was pulling information from the api that was inside other objects.
+
+#### Stretch Goals
+- Be able to give more organized details about the books when a search is applied.
+
+- Be able to give a "Read" and "Need to read" status and options for user to use.
+
+- Be able to allow user to have and edit more features and details to their profiles.
+
+- Sharability of Book favorites list and communication features with other users.
+
 #### Contributing
 Contributions are welcome! Please follow these steps:
 
@@ -72,15 +96,6 @@ Contributions are welcome! Please follow these steps:
 -Push to the branch: git push origin feature/your-feature.
 
 -Submit a pull request.
-
-#### Stretch Goals
-- Be able to give more organized details about the books when a search is applied.
-
-- Be able to give a "Read" and "Need to read" status and options for user to use.
-
-- Be able to allow user to have and edit more features and details to their profiles.
-
-- Sharability of Book favorites list and communication features with other users.
 
 #### License
 This project is licensed under the MIT License. See the LICENSE file for more details.
