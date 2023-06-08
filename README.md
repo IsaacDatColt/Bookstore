@@ -2,7 +2,7 @@
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-Book Explorer is an application that allows users to explore and discover books based on different genres. Users can create an account, search for books by author, title, ISBN, or category, and read book descriptions. They can also favorite books to save them for future reading.
+BookVibes is an application that allows users to explore and discover books based on different genres. Users can create an account, search for books by author, title, ISBN, or category, and read book descriptions. They can also favorite books to save them for future reading.
 
 ## Features
 
@@ -11,6 +11,9 @@ Book Explorer is an application that allows users to explore and discover books 
 - Search functionality: Users can search for books by author, title, ISBN, or category.
 - Book details: Users can view detailed information about each book, including the author, description, and other relevant details.
 - Favorite books: Users can mark books as favorites to create a personalized reading list.
+
+#### API
+- pulls from the google books API
 
 ## Screenshots
 Create an account!
