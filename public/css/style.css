@@ -6,22 +6,22 @@ nav ul li {
 }
 
 h1 {
-    color: chartreuse;
+    color: rgb(40, 226, 34);
 }
 
 .gradient-custom {
     /* fallback for old browsers */
-    background: #6a11cb;
+    background: #0b0bbe;
 
     /* Chrome 10-25, Safari 5.1-6 */
-    background: -webkit-linear-gradient(to right, rgba(106, 17, 203, 1), rgba(37, 117, 252, 1));
+    background: -webkit-linear-gradient(to right, rgb(25, 48, 183), rgb(25, 48, 183));
 
     /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-    background: linear-gradient(to right, rgba(106, 17, 203, 1), rgba(37, 117, 252, 1));
+    background: linear-gradient(to right, rgba(20, 38, 174, 0.96), rgb(25, 48, 183));
 }
 
 body {
-    background-color: #362B45;
+    background-color: #343a40;
     color: #FFFFFF;
 }
 
@@ -31,7 +31,7 @@ body {
 }
 
 .jumbotron {
-    background-color: #523C57;
+    background-color: #343a40;
     color: #FFFFFF;
 }
 
@@ -79,7 +79,7 @@ body {
     padding: 10px 20px;
     border-radius: 5px;
     border: none;
-    background-color: #8C6B8F;
+    background-color: #38c72a;
     color: #FFFFFF;
 }
 
@@ -88,7 +88,7 @@ body {
 }
 
 .feature-card {
-    background-color: #523C57;
+    background-color: #6b686c;
     color: #FFFFFF;
     padding: 20px;
     border-radius: 10px;
@@ -104,7 +104,7 @@ body {
 }
 
 .footer {
-    background-color: #523C57;
+    background-color: #7a757a;
     color: #FFFFFF;
     padding: 20px;
     text-align: center;
@@ -164,8 +164,8 @@ body {
 /* Additional styles for explore page */
 
 .explore-body {
-    background-color: #242c67;
-    color: #333;
+    background-color: #203a9f;
+    color: #edeff2;
 }
 
 .summary-section {
@@ -173,7 +173,7 @@ body {
 }
 
 .summary-section .section-heading {
-    color: #61ee1a;
+    color: #44caa0;
     font-size: 2rem;
     margin-bottom: 2rem;
 }
@@ -184,7 +184,7 @@ body {
 }
 
 .genre-card {
-    background-color: #523C57;
+    background-color: #6b6a6e;
     padding: 2rem;
     border-radius: 10px;
     margin-bottom: 2rem;

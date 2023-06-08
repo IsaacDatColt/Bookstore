@@ -128,6 +128,38 @@ app.post('/bookSearch', isLoggedIn, (req, res) => {
     });
 });
 
+
+// Favorites page route
+app.get('/favorites', isLoggedIn, async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const userFavorites = await favorite.findAll({
+      where: {
+        userId: userId
+      }
+    });
+
+    console.log('USER FAVORITES:', userFavorites);
+    const favoriteBooks = [];
+
+    for (const userFavorite of userFavorites) {
+      try {
+        const bookId = userFavorite.bookId;
+        const response = await axios.get(`https://www.googleapis.com/books/v1/volumes/${bookId}?key=${API_KEY}`);
+        favoriteBooks.push(response.data);
+      } catch (error) {
+        console.error('Error fetching book details:', error);
+      }
+    }
+
+    res.render('favorites', { books: favoriteBooks });
+
+  } catch (error) {
+    console.error('Error retrieving user favorites:', error);
+    res.render('no-results', { books: [] });
+  }
+});
+
 // Add book to favorites
 app.post('/favorites/add', async (req, res) => {
   const { bookId } = req.body;
@@ -170,37 +202,6 @@ app.delete('/favorites/:id', async (req, res) => {
   }
 });
 
-
-// Favorites page route
-app.get('/favorites', isLoggedIn, async (req, res) => {
-  try {
-    const userId = req.user.id;
-    const userFavorites = await favorite.findAll({
-      where: {
-        userId: userId
-      }
-    });
-
-    console.log('USER FAVORITES:', userFavorites);
-    const favoriteBooks = [];
-
-    for (const userFavorite of userFavorites) {
-      try {
-        const bookId = userFavorite.bookId;
-        const response = await axios.get(`https://www.googleapis.com/books/v1/volumes/${bookId}?key=${API_KEY}`);
-        favoriteBooks.push(response.data);
-      } catch (error) {
-        console.error('Error fetching book details:', error);
-      }
-    }
-
-    res.render('favorites', { books: favoriteBooks });
-
-  } catch (error) {
-    console.error('Error retrieving user favorites:', error);
-    res.render('no-results', { books: [] });
-  }
-});
 
 // Route for adventure page
 app.get('/adventure', isLoggedIn, (req, res) => {
@@ -368,6 +369,10 @@ app.put('/profile/email', isLoggedIn, async (req, res) => {
     req.flash('error', 'Failed to update email');
     res.redirect('/profile');
   }
+});
+
+app.use((req, res) => {
+  res.status(404).render('404');
 });
 
 const PORT = process.env.PORT || 3000;
