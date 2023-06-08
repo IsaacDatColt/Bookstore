@@ -22,13 +22,14 @@ Home Page:
 ![Homepage]()
 
 
-## Installation
-
-1. Clone the repository:
-
-   ```bash
+## How to Install
+1. `Fork` and `Clone` this repository in your terminal
    git clone https://github.com/IsaacDatColt/bookVibes
 
+2. Run `npm i` in terminal to install dependencies 
+3. Run `sequelize db:migrate` in terminal to setup the database
+4. Run `npm start` to connect to the server
+5. Open `http://localhost:3000` in your web browser
 
 #### Technologies used
 
@@ -65,6 +66,15 @@ Contributions are welcome! Please follow these steps:
 -Push to the branch: git push origin feature/your-feature.
 
 -Submit a pull request.
+
+#### Stretch Goals
+- Be able to give more organized details about the books when a search is applied.
+
+- Be able to give a "Read" and "Need to read" status and options for user to use.
+
+- Be able to allow user to have and edit more features and details to their profiles.
+
+- Sharability of Book favorites list and communication features with other users.
 
 #### License
 This project is licensed under the MIT License. See the LICENSE file for more details.
