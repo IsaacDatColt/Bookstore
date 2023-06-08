@@ -13,13 +13,19 @@ Book Explorer is an application that allows users to explore and discover books 
 - Favorite books: Users can mark books as favorites to create a personalized reading list.
 
 ## Screenshots
-Log in page:
+Create an account!
 
-![loginpreview]()
+![loginpreview](https://i.imgur.com/2Ucg3Hd.png)
 
 Home Page:
 
-![Homepage]()
+![Homepage](https://i.imgur.com/3AHQEzC.png)
+
+Explore Page: 
+- When you get to the explore page with popular genres, you can click on a genre or go directly to the search page by clicking the page button. 
+
+![Explore](https://i.imgur.com/1ydGbXa.png)
+
 
 
 ## How to Install
