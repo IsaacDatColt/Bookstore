@@ -70,7 +70,7 @@ app.get('/bookSearch/:genre/:title', function (req, res) {
 
 // POST route for book search
 app.post('/bookSearch', isLoggedIn, (req, res) => {
-  const { genre, author, title, category, isbn } = req.body;
+  const { genre, author, title, category, isbn, } = req.body;
 
   let query = '';
 
@@ -100,7 +100,7 @@ app.post('/bookSearch', isLoggedIn, (req, res) => {
     .then(function (response) {
       if (response.data.items && response.data.items.length > 0) {
         const books = response.data.items.map(item => item);
-        // console.log('Search Results:', books);
+        console.log('Search Results:', books);
 
         let filteredBooks;
 
@@ -115,6 +115,11 @@ app.post('/bookSearch', isLoggedIn, (req, res) => {
         } else {
           filteredBooks = books;
         }
+        // Add averageRating attribute to each book
+        filteredBooks = filteredBooks.map(book => ({
+          ...book,
+          averageRating: book.volumeInfo.averageRating || 0
+        }));
         console.log('FILTERED BOOKS', filteredBooks);
         res.render('search', { books: filteredBooks, search: query });
       } else {

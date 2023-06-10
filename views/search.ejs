@@ -66,11 +66,13 @@
                     <% books.forEach(function(book) { %>
                     <div class="search-result">
                         <div class="title-section">
-                            <h3><%= book.volumeInfo.title %></h3>
+                            <h3><%= book.title %></h3>
                         </div>
                         <img src="<%= book.volumeInfo.imageLinks ? book.volumeInfo.imageLinks.thumbnail : '/placeholder.png' %>"
                             alt="Book Cover">
                         <p>Author: <%= book.volumeInfo.authors ? book.volumeInfo.authors.join(', ') : 'N/A' %></p>
+                        <p>Average Rating: <%= book.volumeInfo.averageRating ? book.volumeInfo.averageRating : 'N/A' %>
+                        </p>
                         <p>Description: <%= book.volumeInfo.description ? book.volumeInfo.description : 'N/A' %></p>
                         <p>Category: <%= book.volumeInfo.categories ? book.volumeInfo.categories.join(', ') : 'N/A' %>
                         </p>
